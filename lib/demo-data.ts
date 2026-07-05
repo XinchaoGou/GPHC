@@ -1,0 +1,548 @@
+import type {
+  Brand,
+  HealthTopic,
+  Ingredient,
+  IngredientInteraction,
+  Product,
+  ProductIngredient,
+  TopicIngredient,
+  TopicProduct
+} from "@/lib/types";
+
+export const brands: Brand[] = [
+  {
+    id: "brand_doppelherz",
+    name: "Doppelherz",
+    slug: "doppelherz",
+    country: "Germany",
+    positioning: "德国大众药房与商超常见补剂品牌",
+    officialUrl: "https://www.doppelherz.de/",
+    description:
+      "Doppelherz 是德国消费者熟悉的营养补充剂品牌，产品线覆盖维生素、矿物质、心血管、眼部与日常健康支持。"
+  },
+  {
+    id: "brand_orthomol",
+    name: "Orthomol",
+    slug: "orthomol",
+    country: "Germany",
+    positioning: "偏高端的德国药房营养医学品牌",
+    officialUrl: "https://www.orthomol.com/",
+    description:
+      "Orthomol 常见于德国药房渠道，强调复合营养方案。MVP 中仅作品牌与结构演示，不构成具体疗效承诺。"
+  },
+  {
+    id: "brand_mivolis",
+    name: "Mivolis",
+    slug: "mivolis",
+    country: "Germany",
+    positioning: "dm 自有健康与补剂品牌",
+    officialUrl: "https://www.dm.de/marken/mivolis",
+    description:
+      "Mivolis 是 dm 药妆渠道自有品牌，覆盖基础维生素、矿物质和日常健康支持产品。"
+  },
+  {
+    id: "brand_abtei",
+    name: "Abtei",
+    slug: "abtei",
+    country: "Germany",
+    positioning: "德国传统健康补充剂品牌",
+    officialUrl: "https://www.abtei.de/",
+    description:
+      "Abtei 在德国补剂市场具有较长历史，常见产品包括维生素、矿物质、草本和日常健康支持。"
+  }
+];
+
+export const ingredients: Ingredient[] = [
+  {
+    id: "ingredient_magnesium",
+    nameCn: "镁",
+    nameEn: "Magnesium",
+    nameDe: "Magnesium",
+    slug: "magnesium",
+    category: "mineral",
+    foodSources: "坚果、全谷物、豆类、深绿色蔬菜。",
+    summary: "镁是人体必需矿物质，参与肌肉、神经和能量代谢相关过程。",
+    functionSummary:
+      "与正常肌肉功能、神经系统功能和电解质平衡有关。是否需要补充应结合饮食、生活方式与个人情况。",
+    warnings:
+      "肾功能异常、正在使用特定药物或易腹泻人群应先咨询医生或药师；高剂量镁可能引起胃肠不适。",
+    evidenceLevel: "moderate"
+  },
+  {
+    id: "ingredient_omega3",
+    nameCn: "Omega-3 脂肪酸",
+    nameEn: "Omega-3",
+    nameDe: "Omega-3-Fettsaeuren",
+    slug: "omega-3",
+    category: "fatty acid",
+    foodSources: "深海鱼、亚麻籽、核桃、菜籽油。",
+    summary: "Omega-3 通常指 EPA、DHA 与 ALA 等脂肪酸，饮食来源优先。",
+    functionSummary:
+      "EPA/DHA 与心血管健康相关指标存在研究关联，但不能替代正规治疗或生活方式干预。",
+    warnings:
+      "正在使用抗凝药、即将手术或有出血风险者应咨询医生；注意产品氧化和来源质量。",
+    evidenceLevel: "moderate"
+  },
+  {
+    id: "ingredient_vitamin_d3",
+    nameCn: "维生素 D3",
+    nameEn: "Vitamin D3",
+    nameDe: "Vitamin D3",
+    slug: "vitamin-d3",
+    category: "vitamin",
+    foodSources: "日照、脂肪鱼、蛋黄、强化食品。",
+    summary: "维生素 D 与钙磷代谢和骨骼健康相关，缺乏风险受日照与饮食影响。",
+    functionSummary:
+      "可用于支持维持正常骨骼、牙齿和肌肉功能。补充剂量宜参考检测结果和专业建议。",
+    warnings:
+      "避免长期超量；高钙血症、肾病或使用相关药物者应咨询医生。",
+    evidenceLevel: "strong"
+  },
+  {
+    id: "ingredient_zinc",
+    nameCn: "锌",
+    nameEn: "Zinc",
+    nameDe: "Zink",
+    slug: "zinc",
+    category: "mineral",
+    foodSources: "牡蛎、肉类、坚果、豆类、全谷物。",
+    summary: "锌是必需微量元素，参与免疫、皮肤和多种酶功能。",
+    functionSummary:
+      "与正常免疫系统功能有关，但补锌不等于预防或治疗感染。",
+    warnings:
+      "长期高剂量可能影响铜状态；与铁、钙和某些药物同服可能影响吸收。",
+    evidenceLevel: "moderate"
+  },
+  {
+    id: "ingredient_coq10",
+    nameCn: "辅酶 Q10",
+    nameEn: "CoQ10",
+    nameDe: "Coenzym Q10",
+    slug: "coq10",
+    category: "coenzyme",
+    foodSources: "肉类、鱼类、坚果，人体也可自行合成。",
+    summary: "辅酶 Q10 参与细胞能量代谢，常见于心血管与活力支持类产品。",
+    functionSummary:
+      "研究方向包括能量代谢和心血管相关人群，但证据与适用边界需要谨慎解读。",
+    warnings:
+      "使用华法林等抗凝药或慢性病用药者应先咨询医生。",
+    evidenceLevel: "limited"
+  },
+  {
+    id: "ingredient_lutein",
+    nameCn: "叶黄素",
+    nameEn: "Lutein",
+    nameDe: "Lutein",
+    slug: "lutein",
+    category: "carotenoid",
+    foodSources: "菠菜、羽衣甘蓝、玉米、蛋黄。",
+    summary: "叶黄素是类胡萝卜素，集中于眼部黄斑区域，饮食摄入很重要。",
+    functionSummary:
+      "常用于眼部健康支持讨论，尤其与长期屏幕使用和中老年眼部营养关注相关。",
+    warnings:
+      "不能替代眼科检查；视力变化、眼痛或突发症状应及时就医。",
+    evidenceLevel: "moderate"
+  }
+];
+
+export const products: Product[] = [
+  {
+    id: "product_doppelherz_magnesium",
+    brandId: "brand_doppelherz",
+    nameCn: "Doppelherz 镁片（演示）",
+    nameOriginal: "Doppelherz Magnesium 400",
+    slug: "doppelherz-magnesium-400-demo",
+    category: "Minerals",
+    dosageForm: "tablet",
+    packageSize: "60 tablets",
+    imageUrl: "",
+    summary: "演示用德国镁补充剂条目，用于展示矿物质、剂量和主题关联。",
+    warnings: "具体剂量和标签以原包装为准；肾功能异常者需先咨询专业人士。",
+    isDemo: true
+  },
+  {
+    id: "product_doppelherz_omega3",
+    brandId: "brand_doppelherz",
+    nameCn: "Doppelherz Omega-3 胶囊（演示）",
+    nameOriginal: "Doppelherz Omega-3 1400",
+    slug: "doppelherz-omega-3-demo",
+    category: "Omega-3",
+    dosageForm: "capsule",
+    packageSize: "30 capsules",
+    imageUrl: "",
+    summary: "演示用 Omega-3 产品条目，用于展示心血管主题下的透明推荐解释。",
+    warnings: "抗凝用药、出血风险或手术前人群应咨询医生。",
+    isDemo: true
+  },
+  {
+    id: "product_mivolis_vitamin_d3",
+    brandId: "brand_mivolis",
+    nameCn: "Mivolis 维生素 D3（演示）",
+    nameOriginal: "Mivolis Vitamin D3",
+    slug: "mivolis-vitamin-d3-demo",
+    category: "Vitamins",
+    dosageForm: "tablet",
+    packageSize: "100 tablets",
+    imageUrl: "",
+    summary: "演示用维生素 D3 条目，用于骨骼健康主题和成分页面关联展示。",
+    warnings: "避免长期超量；如已检测缺乏或患有肾病，应遵医嘱。",
+    isDemo: true
+  },
+  {
+    id: "product_abtei_zinc",
+    brandId: "brand_abtei",
+    nameCn: "Abtei 锌片（演示）",
+    nameOriginal: "Abtei Zink",
+    slug: "abtei-zinc-demo",
+    category: "Minerals",
+    dosageForm: "tablet",
+    packageSize: "42 tablets",
+    imageUrl: "",
+    summary: "演示用锌补充剂条目，展示免疫支持主题下的边界说明。",
+    warnings: "长期高剂量补锌可能影响铜状态，儿童与孕期人群需专业建议。",
+    isDemo: true
+  },
+  {
+    id: "product_orthomol_eye",
+    brandId: "brand_orthomol",
+    nameCn: "Orthomol 眼部营养组合（演示）",
+    nameOriginal: "Orthomol Vision",
+    slug: "orthomol-vision-demo",
+    category: "Eye Health",
+    dosageForm: "capsule",
+    packageSize: "30 daily servings",
+    imageUrl: "",
+    summary: "演示用眼部健康复合营养条目，含叶黄素等方向性成分。",
+    warnings: "不能替代眼科检查；突发眼部症状应及时就医。",
+    isDemo: true
+  },
+  {
+    id: "product_doppelherz_coq10",
+    brandId: "brand_doppelherz",
+    nameCn: "Doppelherz 辅酶 Q10（演示）",
+    nameOriginal: "Doppelherz Coenzym Q10",
+    slug: "doppelherz-coq10-demo",
+    category: "Cell Energy",
+    dosageForm: "capsule",
+    packageSize: "30 capsules",
+    imageUrl: "",
+    summary: "演示用辅酶 Q10 条目，适合展示有限证据与用药相互作用提示。",
+    warnings: "慢性病用药、抗凝药使用者应先咨询医生。",
+    isDemo: true
+  }
+];
+
+export const productIngredients: ProductIngredient[] = [
+  {
+    id: "pi_magnesium",
+    productId: "product_doppelherz_magnesium",
+    ingredientId: "ingredient_magnesium",
+    amount: 400,
+    unit: "mg",
+    servingSize: "1 tablet",
+    ingredientForm: "mixed salts",
+    dailyValuePercent: null,
+    note: "演示剂量，真实标签需核对原包装。"
+  },
+  {
+    id: "pi_omega3",
+    productId: "product_doppelherz_omega3",
+    ingredientId: "ingredient_omega3",
+    amount: 1400,
+    unit: "mg fish oil",
+    servingSize: "1 capsule",
+    ingredientForm: "fish oil concentrate",
+    dailyValuePercent: null,
+    note: "演示条目，EPA/DHA 细分含量需按标签录入。"
+  },
+  {
+    id: "pi_vitamin_d3",
+    productId: "product_mivolis_vitamin_d3",
+    ingredientId: "ingredient_vitamin_d3",
+    amount: 25,
+    unit: "ug",
+    servingSize: "1 tablet",
+    ingredientForm: "cholecalciferol",
+    dailyValuePercent: 500,
+    note: "演示剂量，需结合标签与当地参考摄入标准。"
+  },
+  {
+    id: "pi_zinc",
+    productId: "product_abtei_zinc",
+    ingredientId: "ingredient_zinc",
+    amount: 10,
+    unit: "mg",
+    servingSize: "1 tablet",
+    ingredientForm: "zinc gluconate",
+    dailyValuePercent: 100,
+    note: "演示剂量。"
+  },
+  {
+    id: "pi_lutein",
+    productId: "product_orthomol_eye",
+    ingredientId: "ingredient_lutein",
+    amount: 10,
+    unit: "mg",
+    servingSize: "1 daily serving",
+    ingredientForm: "lutein",
+    dailyValuePercent: null,
+    note: "复合产品演示字段。"
+  },
+  {
+    id: "pi_coq10",
+    productId: "product_doppelherz_coq10",
+    ingredientId: "ingredient_coq10",
+    amount: 100,
+    unit: "mg",
+    servingSize: "1 capsule",
+    ingredientForm: "ubiquinone",
+    dailyValuePercent: null,
+    note: "演示剂量。"
+  }
+];
+
+export const healthTopics: HealthTopic[] = [
+  {
+    id: "topic_sleep",
+    title: "睡眠",
+    slug: "sleep",
+    summary: "关注睡眠习惯、压力管理、咖啡因使用和可能相关的营养因素。",
+    lifestyleAdvice:
+      "优先建立固定作息、晨间光照、减少晚间酒精与屏幕刺激，并排查压力与睡眠环境问题。",
+    supplementNotes:
+      "补剂只能作为辅助讨论，若长期失眠、打鼾憋醒或白天嗜睡，应先寻求专业评估。",
+    warningNotes: "不要将补剂作为镇静药替代品；孕期、慢病或用药人群需咨询医生。",
+    medicalBoundary: "本页不诊断失眠症或睡眠障碍。"
+  },
+  {
+    id: "topic_cardiovascular",
+    title: "心血管健康",
+    slug: "cardiovascular-health",
+    summary: "从饮食、运动、体重管理、血压血脂监测和相关营养因素理解心血管支持。",
+    lifestyleAdvice:
+      "优先控制吸烟、运动不足、高盐饮食和体重等可改变因素，并按需进行体检。",
+    supplementNotes:
+      "Omega-3、辅酶 Q10 等成分可作为营养讨论入口，但不能替代降压、降脂或抗凝治疗。",
+    warningNotes: "胸痛、呼吸困难、突发不适等情况应立即就医。",
+    medicalBoundary: "本页不评估心血管疾病风险，不调整处方药。"
+  },
+  {
+    id: "topic_eye",
+    title: "眼部健康",
+    slug: "eye-health",
+    summary: "围绕屏幕使用、户外活动、眼科检查和黄斑相关营养因素建立眼部健康认知。",
+    lifestyleAdvice:
+      "保持规律眼科检查，控制连续近距离用眼时间，增加户外活动并关注基础代谢健康。",
+    supplementNotes:
+      "叶黄素等成分可作为眼部营养支持讨论，但不能替代眼科诊断或治疗。",
+    warningNotes: "突发视力下降、眼痛、闪光感或视野缺损需及时就医。",
+    medicalBoundary: "本页不判断眼病类型，不替代眼科检查。"
+  },
+  {
+    id: "topic_women",
+    title: "女性健康",
+    slug: "women-health",
+    summary: "关注不同生命阶段的营养、睡眠、运动、铁和维生素 D 等基础因素。",
+    lifestyleAdvice:
+      "优先保证均衡饮食、力量训练、睡眠、压力管理和定期体检。",
+    supplementNotes:
+      "补剂选择应结合年龄、饮食、经期、孕备孕状态和检测结果。",
+    warningNotes: "孕期、哺乳期、备孕或有妇科症状时，应先咨询医生。",
+    medicalBoundary: "本页不处理妇科诊断或激素治疗建议。"
+  },
+  {
+    id: "topic_bone",
+    title: "骨骼健康",
+    slug: "bone-health",
+    summary: "从日照、蛋白质、负重运动、钙和维生素 D 状态理解骨骼长期管理。",
+    lifestyleAdvice:
+      "优先进行规律负重运动、足量蛋白质摄入、合理日照和跌倒风险管理。",
+    supplementNotes:
+      "维生素 D3 和矿物质补充需结合饮食、检测结果和年龄风险。",
+    warningNotes: "骨折、骨痛或骨质疏松风险高的人群应接受专业评估。",
+    medicalBoundary: "本页不诊断骨质疏松，不替代骨密度检查。"
+  },
+  {
+    id: "topic_immune",
+    title: "免疫支持",
+    slug: "immune-support",
+    summary: "以睡眠、营养、运动和疫苗等基础措施为先，理解锌和维生素 D 等营养因素。",
+    lifestyleAdvice:
+      "优先保证睡眠、均衡饮食、适量运动、洗手和必要疫苗接种。",
+    supplementNotes:
+      "锌和维生素 D 可作为营养状态支持，不应被理解为预防或治疗感染。",
+    warningNotes: "持续发热、严重感染症状或免疫系统疾病应就医。",
+    medicalBoundary: "本页不诊断感染，不替代疫苗或药物治疗。"
+  }
+];
+
+export const topicIngredients: TopicIngredient[] = [
+  {
+    id: "ti_sleep_magnesium",
+    topicId: "topic_sleep",
+    ingredientId: "ingredient_magnesium",
+    relevanceLevel: "medium",
+    evidenceLevel: "limited",
+    explanation: "镁与神经和肌肉功能相关，睡眠主题中常作为压力、肌肉紧张和饮食不足的营养因素讨论。",
+    cautionNote: "长期睡眠问题应先评估行为、压力、呼吸和疾病因素。"
+  },
+  {
+    id: "ti_cardio_omega3",
+    topicId: "topic_cardiovascular",
+    ingredientId: "ingredient_omega3",
+    relevanceLevel: "high",
+    evidenceLevel: "moderate",
+    explanation: "EPA/DHA 与心血管相关指标存在研究关联，常作为鱼类摄入不足时的营养讨论方向。",
+    cautionNote: "抗凝药、出血风险或手术前人群需先咨询医生。"
+  },
+  {
+    id: "ti_cardio_coq10",
+    topicId: "topic_cardiovascular",
+    ingredientId: "ingredient_coq10",
+    relevanceLevel: "medium",
+    evidenceLevel: "limited",
+    explanation: "辅酶 Q10 参与能量代谢，是部分心血管营养支持产品的常见成分，但证据边界需谨慎。",
+    cautionNote: "不能替代处方治疗，慢病用药者需咨询医生。"
+  },
+  {
+    id: "ti_eye_lutein",
+    topicId: "topic_eye",
+    ingredientId: "ingredient_lutein",
+    relevanceLevel: "high",
+    evidenceLevel: "moderate",
+    explanation: "叶黄素集中于黄斑区域，常用于眼部营养和长期屏幕使用人群的营养讨论。",
+    cautionNote: "眼部症状应优先做眼科检查。"
+  },
+  {
+    id: "ti_women_vitd",
+    topicId: "topic_women",
+    ingredientId: "ingredient_vitamin_d3",
+    relevanceLevel: "medium",
+    evidenceLevel: "moderate",
+    explanation: "维生素 D 状态与骨骼、肌肉和一般营养管理相关，女性不同阶段可能需要关注。",
+    cautionNote: "孕备孕、哺乳或高剂量补充需专业建议。"
+  },
+  {
+    id: "ti_bone_vitd",
+    topicId: "topic_bone",
+    ingredientId: "ingredient_vitamin_d3",
+    relevanceLevel: "high",
+    evidenceLevel: "strong",
+    explanation: "维生素 D 与钙磷代谢和正常骨骼功能关系明确，是骨骼健康主题中的基础营养因素。",
+    cautionNote: "补充剂量应结合日照、饮食、检测结果和个体风险。"
+  },
+  {
+    id: "ti_bone_magnesium",
+    topicId: "topic_bone",
+    ingredientId: "ingredient_magnesium",
+    relevanceLevel: "medium",
+    evidenceLevel: "limited",
+    explanation: "镁参与矿物质代谢与肌肉功能，可作为骨骼健康生活方式之外的辅助营养因素。",
+    cautionNote: "不要用矿物质补充替代骨质疏松评估。"
+  },
+  {
+    id: "ti_immune_zinc",
+    topicId: "topic_immune",
+    ingredientId: "ingredient_zinc",
+    relevanceLevel: "high",
+    evidenceLevel: "moderate",
+    explanation: "锌与正常免疫功能有关，饮食不足或特殊阶段可作为营养状态讨论。",
+    cautionNote: "补锌不等于治疗感染，避免长期高剂量。"
+  },
+  {
+    id: "ti_immune_vitd",
+    topicId: "topic_immune",
+    ingredientId: "ingredient_vitamin_d3",
+    relevanceLevel: "medium",
+    evidenceLevel: "moderate",
+    explanation: "维生素 D 与免疫功能存在研究关联，但应以纠正缺乏和维持正常状态为目标。",
+    cautionNote: "不应将维生素 D 作为感染预防或治疗承诺。"
+  }
+];
+
+export const topicProducts: TopicProduct[] = [
+  {
+    id: "tp_sleep_magnesium",
+    topicId: "topic_sleep",
+    productId: "product_doppelherz_magnesium",
+    relevanceLevel: "medium",
+    displayOrder: 1,
+    recommendationNote: "该演示产品含镁，因此出现在睡眠主题的营养因素链路中。",
+    cautionNote: "睡眠问题优先处理作息、压力、咖啡因和睡眠环境。"
+  },
+  {
+    id: "tp_cardio_omega3",
+    topicId: "topic_cardiovascular",
+    productId: "product_doppelherz_omega3",
+    relevanceLevel: "high",
+    displayOrder: 1,
+    recommendationNote: "该演示产品含 Omega-3，与心血管健康主题的相关成分匹配。",
+    cautionNote: "正在使用抗凝药或有出血风险者需先咨询医生。"
+  },
+  {
+    id: "tp_cardio_coq10",
+    topicId: "topic_cardiovascular",
+    productId: "product_doppelherz_coq10",
+    relevanceLevel: "medium",
+    displayOrder: 2,
+    recommendationNote: "该演示产品含辅酶 Q10，可用于展示有限证据下的营养支持信息。",
+    cautionNote: "不能替代心血管疾病治疗或处方药管理。"
+  },
+  {
+    id: "tp_eye_lutein",
+    topicId: "topic_eye",
+    productId: "product_orthomol_eye",
+    relevanceLevel: "high",
+    displayOrder: 1,
+    recommendationNote: "该演示产品含叶黄素，匹配眼部健康主题的关键营养因素。",
+    cautionNote: "眼部症状优先就医，补剂不替代眼科检查。"
+  },
+  {
+    id: "tp_bone_vitd",
+    topicId: "topic_bone",
+    productId: "product_mivolis_vitamin_d3",
+    relevanceLevel: "high",
+    displayOrder: 1,
+    recommendationNote: "该演示产品含维生素 D3，与骨骼健康主题的基础营养因素相关。",
+    cautionNote: "避免长期超量，必要时通过检测确认状态。"
+  },
+  {
+    id: "tp_immune_zinc",
+    topicId: "topic_immune",
+    productId: "product_abtei_zinc",
+    relevanceLevel: "high",
+    displayOrder: 1,
+    recommendationNote: "该演示产品含锌，与免疫支持主题的相关营养因素匹配。",
+    cautionNote: "免疫支持首先依赖睡眠、饮食、运动和疫苗等基础措施。"
+  }
+];
+
+export const ingredientInteractions: IngredientInteraction[] = [
+  {
+    id: "interaction_omega3_anticoagulants",
+    ingredientId: "ingredient_omega3",
+    interactionTarget: "Anticoagulants",
+    targetType: "drug",
+    interactionLevel: "medium",
+    description: "Omega-3 与抗凝或抗血小板用药并用时应关注出血风险。",
+    recommendation: "使用相关药物者在补充前咨询医生或药师。"
+  },
+  {
+    id: "interaction_vitd_hypercalcemia",
+    ingredientId: "ingredient_vitamin_d3",
+    interactionTarget: "Hypercalcemia",
+    targetType: "condition",
+    interactionLevel: "high",
+    description: "高钙血症或相关肾脏问题人群不宜自行高剂量补充维生素 D。",
+    recommendation: "应根据检测结果和医生建议决定剂量。"
+  },
+  {
+    id: "interaction_zinc_iron",
+    ingredientId: "ingredient_zinc",
+    interactionTarget: "Iron",
+    targetType: "ingredient",
+    interactionLevel: "low",
+    description: "锌、铁、钙等矿物质同服可能相互影响吸收。",
+    recommendation: "如需多种矿物质补充，可错开服用并参考专业建议。"
+  }
+];
